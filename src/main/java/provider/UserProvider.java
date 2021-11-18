@@ -20,7 +20,8 @@ public class UserProvider {
             users.add(new User(
                     resultSet.getString(1),
                     resultSet.getString(2),
-                    resultSet.getInt(3)
+                    resultSet.getInt(3),
+                    resultSet.getBoolean(4)
                     ));
         }
         db.close();
@@ -30,10 +31,11 @@ public class UserProvider {
     public void create(User user) throws ClassNotFoundException, SQLException {
         MySQL db = new MySQL();
         db.connect();
-        String sql = "INSERT INTO users2610(id, name, age) VALUES ('%ID','%NAME',%AGE)";
+        String sql = "INSERT INTO users2610(id, name, age, blocked) VALUES ('%ID','%NAME',%AGE, %BLOCKED)";
         sql = sql.replace("%ID", UUID.randomUUID().toString());
         sql = sql.replace("%NAME",user.getName());
         sql = sql.replace("%AGE",""+user.getAge());
+        sql = sql.replace("%BLOCKED",""+user.isBlocked());
         db.commandSQL(sql);
     }
 

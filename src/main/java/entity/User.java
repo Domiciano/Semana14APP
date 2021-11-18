@@ -5,15 +5,17 @@ public class User {
     private String id;
     private String name;
     private int age;
+    private boolean blocked;
 
 
     public User() {
     }
 
-    public User(String id, String name, int age) {
+    public User(String id, String name, int age, boolean blocked) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.blocked = blocked;
     }
 
     public String getId() {
@@ -38,5 +40,13 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }
