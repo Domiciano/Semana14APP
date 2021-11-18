@@ -1,6 +1,0 @@
-provider/UserProvider.class
-entity/Message.class
-entity/User.class
-config/ApplicationConfig.class
-db/MySQL.class
-services/UserService.class
