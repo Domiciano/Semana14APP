@@ -37,6 +37,29 @@ public class UserProvider {
         sql = sql.replace("%AGE",""+user.getAge());
         sql = sql.replace("%BLOCKED",""+user.isBlocked());
         db.commandSQL(sql);
+        db.close();
     }
+
+    public ArrayList<User> getPage(int page, int limit) throws ClassNotFoundException, SQLException {
+        ArrayList<User> users = new ArrayList<>();
+        MySQL db = new MySQL();
+        db.connect();
+        String sql = "SELECT * FROM users2610 ORDER BY id LIMIT $LIMIT OFFSET $OFFSET";
+        sql = sql.replace("$LIMIT", limit+"");
+        sql = sql.replace("$OFFSET", ""+(page*limit));
+        ResultSet resultSet = db.getDataBySQL(sql);
+        while (resultSet.next()){
+            users.add(new User(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getInt(3),
+                    resultSet.getBoolean(4)
+            ));
+        }
+        db.close();
+        return users;
+    }
+
+
 
 }

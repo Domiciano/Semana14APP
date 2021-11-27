@@ -16,13 +16,13 @@ public class UserService {
 
     @GET
     @Path("index")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @OPTIONS
     @Path("create")
-    public Response options(User user){
+    public Response options(User user) {
         return Response.status(200)
                 .header("access-control-allow-origin", "*")
                 .header("access-control-allow-methods", "*")
@@ -33,7 +33,7 @@ public class UserService {
     @POST
     @Path("create")
     @Consumes("application/json")
-    public Response create(User user){
+    public Response create(User user) {
         try {
             UserProvider provider = new UserProvider();
             provider.create(user);
@@ -42,7 +42,7 @@ public class UserService {
                     .header("access-control-allow-methods", "*")
                     .header("access-control-allow-headers", "*")
                     .entity(new Message("Usuario creado correctamente")).build();
-        }catch (ClassNotFoundException | SQLException ex){
+        } catch (ClassNotFoundException | SQLException ex) {
             return Response.status(500)
                     .header("access-control-allow-origin", "*")
                     .header("access-control-allow-methods", "*")
@@ -55,7 +55,7 @@ public class UserService {
     @GET
     @Path("getall")
     @Produces("application/json")
-    public Response getAll(){
+    public Response getAll() {
         try {
             UserProvider provider = new UserProvider();
             ArrayList<User> users = provider.getAll();
@@ -66,7 +66,21 @@ public class UserService {
 
     }
 
-
+    @GET
+    @Path("page/{pageNumber}/limit/{limit}")
+    @Produces("application/json")
+    public Response getPage(@PathParam("pageNumber") int page, @PathParam("limit") int limit) {
+        try {
+            UserProvider provider = new UserProvider();
+            ArrayList<User> users = provider.getPage(page, limit);
+            if (users.isEmpty())
+                return Response.status(204).header("access-control-allow-origin", "*").build();
+            else
+                return Response.status(200).header("access-control-allow-origin", "*").entity(users).build();
+        } catch (SQLException | ClassNotFoundException ex) {
+            return Response.status(500).header("access-control-allow-origin", "*").entity(new Message(ex.getMessage())).build();
+        }
+    }
 
 
 }
